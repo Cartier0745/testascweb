@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@azure/communication-calling": "^1.8.1-beta.1",
+    "@azure/communication-common": "^2.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:dev": "webpack-dev-server --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js"
+  },
+  "devDependencies": {
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^5.9.0"
+  }
+}
