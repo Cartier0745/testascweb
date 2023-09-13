@@ -1,8 +1,8 @@
 # Azure Communication Service Teams Video calling
 ![No slider (1)](https://github.com/Cartier0745/testascweb/assets/102744633/2e56d4e4-c175-44c0-8e64-ddc11067f718)
 
-document on client side: https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/get-started-with-voice-video-calling-custom-teams-client
-Server side added to get token easier.
+- document on client side: https://learn.microsoft.com/en-us/azure/communication-services/quickstarts/voice-video-calling/get-started-with-voice-video-calling-custom-teams-client
+- Server side added to get token easier.
 
 1. modify index.js
 
