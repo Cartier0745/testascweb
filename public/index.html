@@ -10,10 +10,12 @@
             type="text"
             placeholder="User access token"
             style="margin-bottom:1em; width: 500px;"/>
+        <button id="fetch-token" type="button">Fetch ACS Token</button>
         <button id="initialize-teams-call-agent" type="button">Initialize Teams Call Agent</button>
         <br>
+        <label id="expired-on" style="color: #13bb13;" hidden></label>
         <br>
-        <input id="callee-teams-user-id"
+        <input id="callee-teams-user-id"            
             type="text"
             placeholder="Enter callee's Teams user identity in format: '8:orgid:USER_GUID'"
             style="margin-bottom:1em; width: 500px; display: block;"/>
@@ -23,6 +25,7 @@
         <button id="start-video-button" type="button" disabled="true">Start Video</button>
         <button id="stop-video-button" type="button" disabled="true">Stop Video</button>
         <br>
+        <div id="tokenExpiredLabel" style="color: red;" hidden>Token expired! Refresh page, fetch token and initialize call agent again.</div>
         <br>
         <div id="connectedLabel" style="color: #13bb13;" hidden>Call is connected!</div>
         <br>

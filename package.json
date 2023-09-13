@@ -1,17 +1,41 @@
 {
   "dependencies": {
     "@azure/communication-calling": "^1.9.1",
-    "@azure/communication-common": "^2.2.1"
+    "@azure/communication-common": "^2.2.1",
+    "@azure/communication-identity": "^1.2.0",
+    "@azure/msal-node": "^2.1.0",
+    "axios": "^1.5.0",
+    "concurrently": "^8.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
     "build:dev": "webpack-dev-server --config webpack.dev.js",
-    "build:prod": "webpack --config webpack.prod.js"
+    "build:prod": "webpack --config webpack.prod.js",
+    "server": "node index.js",
+    "dev": "concurrently \"npm run build:dev\" \"npm run server\""
   },
   "devDependencies": {
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^5.9.0"
-  }
+  },
+  "name": "testacsweb",
+  "version": "1.0.0",
+  "main": "client.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://Cartier0745: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@github.com/Cartier0745/testascweb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cartier0745/testascweb/issues"
+  },
+  "homepage": "https://github.com/Cartier0745/testascweb#readme",
+  "description": ""
 }

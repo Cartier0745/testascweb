@@ -2,6 +2,7 @@
 const { CallClient, VideoStreamRenderer, LocalVideoStream } = require('@azure/communication-calling');
 const { AzureCommunicationTokenCredential } = require('@azure/communication-common');
 const { AzureLogger, setLogLevel } = require("@azure/logger");
+
 // Set the log level and output
 setLogLevel('verbose');
 AzureLogger.log = (...args) => {
@@ -26,6 +27,51 @@ let stopVideoButton = document.getElementById('stop-video-button');
 let connectedLabel = document.getElementById('connectedLabel');
 let remoteVideoContainer = document.getElementById('remoteVideoContainer');
 let localVideoContainer = document.getElementById('localVideoContainer');
+let fetchTokenButton = document.getElementById('fetch-token');
+let tokenExpiredOnLabel = document.getElementById('expired-on');
+let tokenAlreadyExpiredLabel = document.getElementById('tokenExpiredLabel');
+let expiresOn ;
+fetchTokenButton.onclick = async () => {
+ 
+
+    const ww = 500;
+    const hh = 400;  
+    const title = `Microsoft Login`;
+    const url = `/auth`; 
+    const externalPopup = window.open(url, title, `width=${ww},height=${hh}`);
+    
+    
+    const timer = setInterval(() => {
+        console.log("setInterval ")
+        if (!externalPopup) {
+          timer && clearInterval(timer);
+          return;
+        }
+       
+        const currentUrl = externalPopup.location.href;
+        if (!currentUrl) {
+          return;
+        }
+        const searchParams = new URL(currentUrl).searchParams;
+        
+        const token = searchParams.get('token');
+        const expiresOnParam = searchParams.get('expiresOn');
+        console.log("expired param " + expiresOnParam)
+        if (token && expiresOnParam) {
+          externalPopup.close();
+          userAccessToken.value = token.trim()        
+          expiresOn = new Date(expiresOnParam)
+          tokenExpiredOnLabel.textContent = `Token will be expired on ${expiresOn}`
+          tokenExpiredOnLabel.hidden = false
+          fetchTokenButton.disabled = true  
+
+          timer && clearInterval(timer);
+
+        }
+      },1000)
+    
+
+}
 /**
  * Create an instance of CallClient. Initialize a TeamsCallAgent instance with a CommunicationUserCredential via created CallClient. TeamsCallAgent enables us to make outgoing calls and receive incoming calls. 
  * You can then use the CallClient.getDeviceManager() API instance to get the DeviceManager.
@@ -55,6 +101,8 @@ initializeCallAgentButton.onclick = async () => {
         console.error(error);
     }
 }
+
+
 /**
  * Place a 1:1 outgoing video call to a user
  * Add an event listener to initiate a call when the `startCallButton` is selected.
@@ -64,15 +112,29 @@ initializeCallAgentButton.onclick = async () => {
  * localVideoStream array to the call method. When the call connects, your application will be sending a video stream to the other participant. 
  */
 startCallButton.onclick = async () => {
-    try {
-        const localVideoStream = await createLocalVideoStream();
-        const videoOptions = localVideoStream ? { localVideoStreams: [localVideoStream] } : undefined;
-        call = teamsCallAgent.startCall([{ microsoftTeamsUserId: calleeTeamsUserId.value.trim() }], { videoOptions: videoOptions });
-        // Subscribe to the call's properties and events.
-        subscribeToCall(call);
-    } catch (error) {
-        console.error(error);
+
+    
+    var locCurrentD  = new Date();
+    console.log(`expired: ${expiresOn}, current: ${locCurrentD}`)
+    if (locCurrentD.getTime() < expiresOn.getTime()){
+        try {
+
+            const localVideoStream = await createLocalVideoStream();
+            const videoOptions = localVideoStream ? { localVideoStreams: [localVideoStream] } : undefined;
+            call = teamsCallAgent.startCall([{ microsoftTeamsUserId: calleeTeamsUserId.value.trim() }], { videoOptions: videoOptions });
+            // Subscribe to the call's properties and events.
+            subscribeToCall(call);
+
+            startCallButton.disabled = true;
+            hangUpCallButton.disabled = false;
+        } catch (error) {
+            console.error(error);
+        }
     }
+    else{
+        tokenAlreadyExpiredLabel.hidden = false
+    }
+    
 }
 /**
  * Accepting an incoming call with a video
