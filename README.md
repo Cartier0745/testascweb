@@ -1,4 +1,5 @@
 # Azure Communication Service Teams Video calling
+![No slider (1)](https://github.com/Cartier0745/testascweb/assets/102744633/2e56d4e4-c175-44c0-8e64-ddc11067f718)
 
 1. modify index.js
 
