@@ -27,10 +27,14 @@ let stopVideoButton = document.getElementById('stop-video-button');
 let connectedLabel = document.getElementById('connectedLabel');
 let remoteVideoContainer = document.getElementById('remoteVideoContainer');
 let localVideoContainer = document.getElementById('localVideoContainer');
+
 let fetchTokenButton = document.getElementById('fetch-token');
 let tokenExpiredOnLabel = document.getElementById('expired-on');
 let tokenAlreadyExpiredLabel = document.getElementById('tokenExpiredLabel');
+let camerasOp = document.getElementById('camerasOp');
+let camerasInfo = document.getElementById('camerasInfo');
 let expiresOn ;
+
 fetchTokenButton.onclick = async () => {
  
 
@@ -95,11 +99,33 @@ initializeCallAgentButton.onclick = async () => {
                 console.error(error);
             }
         });
+        
         startCallButton.disabled = false;
         initializeCallAgentButton.disabled = true;
+        await getCameras()
     } catch(error) {
         console.error(error);
     }
+}
+
+getCameras = async () => {
+
+    const cameras = await deviceManager.getCameras();
+    if (cameras) {
+        camerasInfo.textContent = `Camera: ${cameras.length}`
+        for (let index = 0; index < cameras.length; index++) {
+            console.log(`camera ${index} : ${cameras[index]._name}`)         
+            var option = document.createElement("option");
+            option.value = index
+            option.text = cameras[index]._name
+            camerasOp.appendChild(option);    
+        }
+        camerasOp.hidden = false
+    } else {        
+        camerasInfo.textContent = `Camera: null`
+    }
+    camerasInfo.hidden = false
+
 }
 
 
@@ -317,7 +343,17 @@ stopVideoButton.onclick = async () => {
  */
 // Create a local video stream for your camera device
 createLocalVideoStream = async () => {
-    const camera = (await deviceManager.getCameras())[0];
+    var camSelectedIndex;
+    if (camerasOp.selectedIndex == null || camerasOp.selectedIndex==undefined)
+    {
+        console.log(`camera selected index: null or undefined, select 0`)
+        camSelectedIndex = 0
+    }
+    else camSelectedIndex = camerasOp.selectedIndex
+
+   
+    console.log(`camera selected index: ${camSelectedIndex}`)
+    const camera = (await deviceManager.getCameras())[camSelectedIndex];
     if (camera) {
         return new LocalVideoStream(camera);
     } else {

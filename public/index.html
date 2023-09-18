@@ -18,7 +18,13 @@
         <input id="callee-teams-user-id"            
             type="text"
             placeholder="Enter callee's Teams user identity in format: '8:orgid:USER_GUID'"
-            style="margin-bottom:1em; width: 500px; display: block;"/>
+            style="margin-bottom:1em; width: 500px; display: block;"
+            />
+        <br>
+        <label id="camerasInfo" hidden></label>
+        <select name="cameras" id="camerasOp" hidden></select>                
+        <br>
+        <br>
         <button id="start-call-button" type="button" disabled="true">Start Call</button>
         <button id="hangup-call-button" type="button" disabled="true">Hang up Call</button>
         <button id="accept-call-button" type="button" disabled="true">Accept Call</button>
